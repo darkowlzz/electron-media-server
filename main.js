@@ -50,7 +50,7 @@ app.on('ready', () => {
   window.loadURL('file://' + __dirname + '/dashboard.html');
 
   volume.get(function(value) {
-    CURRENT_VOLUME = value;
+    CURRENT_VOLUME = parseInt(value);
   });
 
   server.listen(PORT, function() {
