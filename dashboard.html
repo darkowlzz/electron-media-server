@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h3>Dashboard</h3>
+  <p>Current Volumen is: <span id="vol"><span>
+
+  <script>
+    const volume = require('osx-volume');
+    setInterval(updateVolume, 500);
+
+    function updateVolume() {
+      volume.get(function(value) {
+        var vol = document.getElementById('vol');
+        vol.innerHTML = value;
+      });
+    }
+  </script>
+</body>
+</html>
