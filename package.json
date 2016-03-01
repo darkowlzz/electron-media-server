@@ -4,7 +4,8 @@
   "description": "A minimal Electron application",
   "main": "src/main.js",
   "scripts": {
-    "start": "electron src/main.js"
+    "start": "electron src/main.js",
+    "pack": "electron-packager . Electron-Media-Server --platform=darwin --arch=x64 --version=0.36.0"
   },
   "repository": {
     "type": "git",
