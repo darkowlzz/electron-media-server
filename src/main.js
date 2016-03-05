@@ -54,8 +54,20 @@ function handleRequest(req, res) {
 const server = http.createServer(handleRequest);
 
 app.on('ready', () => {
-  window = new BrowserWindow({width: 400, height: 400});
+  window = new BrowserWindow({
+    'title-bar-style': 'hidden',
+    width: 250,
+    height: 300,
+    'min-width': 250,
+    'min-height': 300,
+    'accept-first-mouse': true
+  });
+
   window.loadURL('file://' + __dirname + '/dashboard.html');
+
+  window.on('closed', () => {
+    window = null;
+  });
 
   volume.get(function(value) {
     CURRENT_VOLUME = parseInt(value);
