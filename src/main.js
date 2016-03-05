@@ -1,5 +1,6 @@
 'use strict';
 
+const debug = require('debug')('main');
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -24,17 +25,24 @@ function decreaseVol() {
 }
 
 function handleRequest(req, res) {
-  console.log('request:', req.method);
-  console.log('req url:', req.url);
+  debug('request:', req.method);
+  debug('req url:', req.url);
 
   switch (req.url) {
     case '/vol/up':
-      console.log('Vol UP!');
+      debug('Vol UP!');
       volume.set(increaseVol());
       break;
     case '/vol/down':
-      console.log('Vol DOWN!');
+      debug('Vol DOWN!');
       volume.set(decreaseVol());
+      break;
+    case '/vol':
+      debug('returning volume');
+      volume.get(function(value) {
+        debug(value);
+        res.end(value);
+      });
       break;
     default:
 
@@ -54,6 +62,6 @@ app.on('ready', () => {
   });
 
   server.listen(PORT, function() {
-    console.log('Server ON');
+    debug('Server ON');
   });
 });
