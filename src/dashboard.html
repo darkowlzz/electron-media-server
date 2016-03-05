@@ -3,13 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <title>EMS</title>
+  <link rel="stylesheet" href="../photon/css/photon.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h3>Electron Media Server</h3>
-  <p>Current Volumen is: <span id="vol"><span>
+  <div class="window">
+    <header class="toolbar toolbar-header">
+      <h1 class="title">Electron Media Server</h1>
+
+      <div class="toolbar-actions">
+        <div class="btn-group">
+          <button class="btn btn-default" id="server-on">
+            <span class="icon icon-play"></span>
+          </button>
+          <button class="btn btn-default" id="server-off">
+            <span class="icon icon-stop"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="window-content">
+      <div class="pane">
+        <div class="good-margin">
+          <p>Volume: <span id="vol"></span></p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="toolbar toolbar-footer">
+      <h1 class="title">Address: <span id="network-address"></span></h1>
+    </footer>
+  </div>
 
   <script>
     const volume = require('osx-volume');
+    const address = require('network-address');
+    const networkAddress = document.getElementById('network-address');
+
+    networkAddress.textContent = address();
     setInterval(updateVolume, 500);
 
     function updateVolume() {
