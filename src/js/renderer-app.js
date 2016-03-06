@@ -3,33 +3,40 @@ document.addEventListener('DOMContentLoaded', function() {
   const ipcRenderer = require('electron').ipcRenderer;
   const volume = require('osx-volume');
   const address = require('network-address');
+  const storage = require('electron-json-storage');
+
   const onButton = document.getElementById('server-on');
   const offButton = document.getElementById('server-off');
+  const port = document.getElementById('port');
   var vol = document.getElementById('vol');
   var status = document.getElementById('status');
 
-  //status.textContent = 'Server not running';
+  const STORAGE_KEY = 'server';
+
+  storage.get(STORAGE_KEY, (error, data) => {
+    port.value = !! data.port ? data.port : 7000;
+  });
+
   setInterval(updateVolume, 500);
 
-  ipcRenderer.on('async-on-server', (event, arg) => {
-    console.log(arg);
-    if (arg ===  101) {
-      setStatus('Server running at ' + address() + ':' +
-                ipcRenderer.sendSync('sync-message', 'getPort'));
-    } else if(arg === 102) {
-      setStatus('Server not running.');
-    }
+  ipcRenderer.on('async-run-server', (event, arg) => {
+    setStatus('Server running at ' + address() + ':' + port.value);
+    // Remember port number on a successful server connection
+    saveData();
+  });
+
+  ipcRenderer.on('async-stop-server', (event, arg) => {
+    setStatus('Server not running.');
   });
 
   onButton.addEventListener('click', () => {
-    console.log('clicked and message sent');
     onButton.classList.add('active');
-    ipcRenderer.send('async-on-server', true);
+    ipcRenderer.send('async-run-server', port.value);
   });
 
   offButton.addEventListener('click', () => {
     onButton.classList.remove('active');
-    ipcRenderer.send('async-on-server', false);
+    ipcRenderer.send('async-stop-server', true);
   });
 
   // Fetch and update the system volume value
@@ -42,5 +49,14 @@ document.addEventListener('DOMContentLoaded', function() {
   // Set the status in footer status bar
   function setStatus(text) {
     status.textContent = text;
+  }
+
+  // Save app data
+  function saveData() {
+    storage.set(STORAGE_KEY,
+      {
+        'port': port.value
+      }
+    );
   }
 });

@@ -74,23 +74,19 @@ app.on('ready', () => {
     CURRENT_VOLUME = parseInt(value);
   });
 
-  ipcMain.on('async-on-server', (event, arg) => {
-    debug('main received', arg);
-    if (arg === true) {
-      server.listen(PORT, () => {
-        debug('Server ON');
-        event.sender.send('async-on-server', 101);
-      });
-    } else {
-      server.close(() => {
-        debug('Server OFF');
-        event.sender.send('async-on-server', 102);
-      });
-    }
+  ipcMain.on('async-run-server', (event, arg) => {
+    debug('run server at', arg);
+    server.listen(arg, () => {
+      debug('Server ON');
+      event.sender.send('async-run-server', true);
+    });
   });
 
-  ipcMain.on('sync-message', (event, arg) => {
-    debug(arg);
-    event.returnValue = PORT;
+  ipcMain.on('async-stop-server', (event, arg) => {
+    debug('stopping the server');
+    server.close(() => {
+      debug('Server OFF');
+      event.sender.send('async-stop-server', true);
+    });
   });
 });
