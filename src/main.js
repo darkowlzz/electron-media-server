@@ -4,6 +4,7 @@ const debug = require('debug')('main');
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
 
 const volume = require('osx-volume');
 const http = require('http');
@@ -73,7 +74,23 @@ app.on('ready', () => {
     CURRENT_VOLUME = parseInt(value);
   });
 
-  server.listen(PORT, function() {
-    debug('Server ON');
+  ipcMain.on('async-on-server', (event, arg) => {
+    debug('main received', arg);
+    if (arg === true) {
+      server.listen(PORT, () => {
+        debug('Server ON');
+        event.sender.send('async-on-server', 101);
+      });
+    } else {
+      server.close(() => {
+        debug('Server OFF');
+        event.sender.send('async-on-server', 102);
+      });
+    }
+  });
+
+  ipcMain.on('sync-message', (event, arg) => {
+    debug(arg);
+    event.returnValue = PORT;
   });
 });

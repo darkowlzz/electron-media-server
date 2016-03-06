@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>EMS</title>
+
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="../photon/css/photon.min.css">
   <link rel="stylesheet" href="style.css">
+
+  <!-- Javascript -->
+  <script src="js/renderer-app.js" charset="utf-8"></script>
 </head>
 <body>
   <div class="window">
@@ -32,24 +37,8 @@
     </div>
 
     <footer class="toolbar toolbar-footer">
-      <h1 class="title">Address: <span id="network-address"></span></h1>
+      <h1 class="title" id="status">Server not running.</h1>
     </footer>
   </div>
-
-  <script>
-    const volume = require('osx-volume');
-    const address = require('network-address');
-    const networkAddress = document.getElementById('network-address');
-
-    networkAddress.textContent = address();
-    setInterval(updateVolume, 500);
-
-    function updateVolume() {
-      volume.get(function(value) {
-        var vol = document.getElementById('vol');
-        vol.innerHTML = value;
-      });
-    }
-  </script>
 </body>
 </html>
