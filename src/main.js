@@ -8,6 +8,7 @@ const ipcMain = electron.ipcMain;
 
 const volume = require('osx-volume');
 const http = require('http');
+const url = require('url');
 
 const PORT = 7000;
 const VOLUME_CHANGE = 10;
@@ -29,7 +30,13 @@ function handleRequest(req, res) {
   debug('request:', req.method);
   debug('req url:', req.url);
 
-  switch (req.url) {
+  var pathname = url.parse(req.url, true).pathname;
+
+  switch (pathname) {
+    case '/vol/set':
+      var query = url.parse(req.url, true).query;
+      volume.set(parseInt(query.vol));
+      break;
     case '/vol/up':
       debug('Vol UP!');
       volume.set(increaseVol());
@@ -44,6 +51,7 @@ function handleRequest(req, res) {
         debug(value);
         res.end(value);
       });
+      return;
       break;
     default:
 
