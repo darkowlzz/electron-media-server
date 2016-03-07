@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron src/main.js",
-    "pack": "electron-packager . Electron-Media-Server --platform=darwin --arch=x64 --version=0.36.0"
+    "pack": "electron-packager . Electron-Media-Server --platform=darwin --arch=x64 --version=0.36.0 --overwrite"
   },
   "repository": {
     "type": "git",
