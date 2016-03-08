@@ -18,11 +18,19 @@ let window = null;
 
 function increaseVol() {
   CURRENT_VOLUME += VOLUME_CHANGE;
+  if (CURRENT_VOLUME > 100) {
+    debug('volume full!!');
+    CURRENT_VOLUME = 100;
+  }
   return CURRENT_VOLUME;
 }
 
 function decreaseVol() {
   CURRENT_VOLUME -= VOLUME_CHANGE;
+  if (CURRENT_VOLUME < 0) {
+    debug('volume min');
+    CURRENT_VOLUME = 0;
+  }
   return CURRENT_VOLUME;
 }
 
