@@ -1,2 +1,3 @@
 node_modules
 Electron-Media-Server-*/
+*.swp

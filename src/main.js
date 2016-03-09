@@ -53,6 +53,14 @@ function handleRequest(req, res) {
       debug('Vol DOWN!');
       volume.set(decreaseVol());
       break;
+    case '/vol/mute':
+      debug('Mute');
+      volume.mute();
+      break;
+    case '/vol/unmute':
+      debug('Unmute');
+      volume.unmute();
+      break;
     case '/vol':
       debug('returning volume');
       volume.get(function(value) {
